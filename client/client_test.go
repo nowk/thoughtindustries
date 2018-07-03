@@ -3,6 +3,7 @@ package client
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 )
@@ -70,4 +71,23 @@ func TestPing(t *testing.T) {
 	if exp != got {
 		t.Errorf("expected status to be true")
 	}
+}
+
+func TestPingLive(t *testing.T) {
+	if os.Getenv("TEST_LIVE") != "true" {
+		t.Skipf("To run Live times please set env TEST_LIVE=true")
+	}
+
+	var (
+		l = os.Getenv("THOUGHTINDUSTRIES_LOGIN")
+		k = os.Getenv("THOUGHTINDUSTRIES_API_KEY")
+
+		cli = New(l, k)
+	)
+	status, err := cli.Ping()
+	if err != nil {
+		t.Errorf("expected no error, got %s", err)
+	}
+
+	t.Logf("status: %v", status)
 }
