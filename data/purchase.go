@@ -1,9 +1,13 @@
 package data
 
+import (
+	"time"
+)
+
 type Purchase struct {
 	Id                    string     `json:"id"`
 	GiftRecipientEmail    string     `json:"giftRecipientEmail,omitempty"`
-	Timestamp             string     `json:"timestamp"`
+	Timestamp             time.Time  `json:"timestamp"`
 	CompanyId             string     `json:"companyId"`
 	Coupon                Coupon     `json:"coupon"`
 	CouponCode            string     `json:"couponCode,omitempty"`
@@ -21,7 +25,7 @@ type Purchase struct {
 	Sku                   string     `json:"sku,omitempty"`
 	Slug                  string     `json:"slug"`
 	Title                 string     `json:"title"`
-	CourseStartDate       string     `json:"courseStartDate"`
+	CourseStartDate       time.Time  `json:"courseStartDate"`
 	AmountNet             int        `json:"amountNet,omitempty"`
 	AmountWithoutDiscount int        `json:"amountWithoutDiscount,omitempty"`
 	AmountDiscounted      int        `json:"amountDiscounted"`

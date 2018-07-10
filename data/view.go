@@ -1,20 +1,24 @@
 package data
 
+import (
+	"time"
+)
+
 type View struct {
-	CompanyId    string `json:"companyId,omitempty"`
-	Timestamp    string `json:"timestamp,omitempty"`
-	CourseId     string `json:"courseId,omitempty"`
-	CourseTitle  string `json:"courseTitle,omitempty"`
-	CourseSku    string `json:"courseSku,omitempty"`
-	LessonId     string `json:"lessonId,omitempty"`
-	LessonTitle  string `json:"lessonTitle,omitempty"`
-	LessonSlug   string `json:"lessonSlug,omitempty"`
-	SectionId    string `json:"sectionId,omitempty"`
-	SectionTitle string `json:"sectionTitle,omitempty"`
-	SectionSlug  string `json:"sectionSlug,omitempty"`
-	TopicId      string `json:"topicId,omitempty"`
-	TopicTitle   string `json:"topicTitle,omitempty"`
-	User         string `json:"user,omitempty"`
+	CompanyId    string    `json:"companyId,omitempty"`
+	Timestamp    time.Time `json:"timestamp,omitempty"`
+	CourseId     string    `json:"courseId,omitempty"`
+	CourseTitle  string    `json:"courseTitle,omitempty"`
+	CourseSku    string    `json:"courseSku,omitempty"`
+	LessonId     string    `json:"lessonId,omitempty"`
+	LessonTitle  string    `json:"lessonTitle,omitempty"`
+	LessonSlug   string    `json:"lessonSlug,omitempty"`
+	SectionId    string    `json:"sectionId,omitempty"`
+	SectionTitle string    `json:"sectionTitle,omitempty"`
+	SectionSlug  string    `json:"sectionSlug,omitempty"`
+	TopicId      string    `json:"topicId,omitempty"`
+	TopicTitle   string    `json:"topicTitle,omitempty"`
+	User         string    `json:"user,omitempty"`
 
 	UserDetail UserDetail `json:"userDetail"`
 }
