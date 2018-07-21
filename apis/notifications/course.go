@@ -1,6 +1,8 @@
 package notifications
 
 import (
+	"net/url"
+
 	"github.com/nowk/thoughtindustries/client"
 	. "github.com/nowk/thoughtindustries/data"
 )
@@ -16,18 +18,18 @@ type CourseViews struct {
 }
 
 type Courser interface {
-	Purchases() (*CoursePurchases, error)
-	Views() (*CourseViews, error)
+	Purchases(...url.Values) (*CoursePurchases, error)
+	Views(...url.Values) (*CourseViews, error)
 }
 
 type course struct {
 	client.Clienter
 }
 
-func (c *course) Purchases() (*CoursePurchases, error) {
+func (c *course) Purchases(qs ...url.Values) (*CoursePurchases, error) {
 	var data CoursePurchases
 
-	err := c.Get("coursePurchase").Json(&data)
+	err := c.Get("coursePurchase", qs...).Json(&data)
 	if err != nil {
 		return nil, err
 	}
@@ -35,10 +37,10 @@ func (c *course) Purchases() (*CoursePurchases, error) {
 	return &data, nil
 }
 
-func (c *course) Views() (*CourseViews, error) {
+func (c *course) Views(qs ...url.Values) (*CourseViews, error) {
 	var data CourseViews
 
-	err := c.Get("courseView").Json(&data)
+	err := c.Get("courseView", qs...).Json(&data)
 	if err != nil {
 		return nil, err
 	}

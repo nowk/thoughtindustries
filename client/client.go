@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/nowk/thoughtindustries/endpoint"
 )
@@ -44,7 +45,7 @@ func (d *decode) Json(v interface{}) error {
 }
 
 type Clienter interface {
-	Get(string) Decoder
+	Get(string, ...url.Values) Decoder
 	Clone() Clienter
 	Endpoint() endpoint.Endpointer
 }
@@ -67,8 +68,8 @@ func New(prefix, token string) *client {
 
 // Get makes the actual http request and returns a Decoder interface to decode
 // to an object of your choice
-func (c *client) Get(path string) Decoder {
-	var url = c.Endpoint().Path(path)
+func (c *client) Get(path string, qs ...url.Values) Decoder {
+	var url = c.Endpoint().Path(qs, path)
 
 	req, err := http.NewRequest(GET, url, nil)
 	if err != nil {

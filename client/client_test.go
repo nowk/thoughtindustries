@@ -3,6 +3,7 @@ package client
 import (
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"testing"
@@ -15,7 +16,7 @@ func TestCloneReturnsAClientWithAClonedEndpoint(t *testing.T) {
 	b.Endpoint().Namespace("foo")
 
 	{
-		pathb := b.Endpoint().Path("bar")
+		pathb := b.Endpoint().Path(nil, "bar")
 
 		var exp = "https://abcd.thoughtindustries.com/incoming/v2/foo/bar"
 		var got = pathb
@@ -26,13 +27,46 @@ func TestCloneReturnsAClientWithAClonedEndpoint(t *testing.T) {
 	}
 
 	{
-		patha := a.Endpoint().Path("bar")
+		patha := a.Endpoint().Path(nil, "bar")
 
 		var exp = "https://abcd.thoughtindustries.com/incoming/v2/bar"
 		var got = patha
 
 		if exp != got {
 			t.Errorf("expected %s, got %s", exp, got)
+		}
+	}
+}
+
+func TestPathAddsUrlValues(t *testing.T) {
+	cli := New("abcd", "1234")
+
+	end := cli.Endpoint()
+	end.Namespace("foo")
+
+	var cases = [][]url.Values{
+		{
+			url.Values{
+				"a": []string{"b"},
+				"c": []string{"d"},
+			},
+		},
+		{
+			url.Values{
+				"a": []string{"b"},
+			},
+			url.Values{
+				"c": []string{"d"},
+			},
+		},
+	}
+
+	for _, v := range cases {
+		var exp = "https://abcd.thoughtindustries.com/incoming/v2/foo/bar?a=b&c=d"
+		var got = end.Path(v, "bar")
+
+		if exp != got {
+			t.Errorf("expected %s to equal %s", exp, got)
 		}
 	}
 }

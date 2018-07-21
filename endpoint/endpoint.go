@@ -13,7 +13,7 @@ const (
 )
 
 type Endpointer interface {
-	Path(...string) string
+	Path([]url.Values, ...string) string
 	Namespace(string)
 	Clone() Endpointer
 }
@@ -36,7 +36,7 @@ func (e *endpoint) Namespace(ns string) {
 }
 
 // Path constructs a final API url
-func (e *endpoint) Path(p ...string) string {
+func (e *endpoint) Path(qs []url.Values, p ...string) string {
 	pre := []string{"incoming", API_VERSION}
 	if e.namespace != "" {
 		pre = append(pre, e.namespace)
@@ -45,12 +45,29 @@ func (e *endpoint) Path(p ...string) string {
 	p = append(pre, p...)
 
 	var URL = url.URL{
-		Scheme: API_PROTOCOL,
-		Host:   strings.Join([]string{e.prefix, API_HOST}, "."),
-		Path:   path.Join(p...),
+		Scheme:   API_PROTOCOL,
+		Host:     strings.Join([]string{e.prefix, API_HOST}, "."),
+		Path:     path.Join(p...),
+		RawQuery: queryString(qs),
 	}
 
 	return URL.String()
+}
+
+// queryString returns the raw query for a given set of url.Values
+func queryString(qs []url.Values) string {
+	if len(qs) == 0 {
+		return ""
+	}
+
+	q := url.Values{}
+	for _, n := range qs {
+		for k, _ := range n {
+			q.Set(k, n.Get(k))
+		}
+	}
+
+	return q.Encode()
 }
 
 // Clone returns a new endpoint using the current prefix

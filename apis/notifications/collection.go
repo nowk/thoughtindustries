@@ -1,6 +1,8 @@
 package notifications
 
 import (
+	"net/url"
+
 	"github.com/nowk/thoughtindustries/client"
 	. "github.com/nowk/thoughtindustries/data"
 )
@@ -11,17 +13,17 @@ type CollectionPurchases struct {
 }
 
 type Collectioner interface {
-	Purchases() (*CollectionPurchases, error)
+	Purchases(...url.Values) (*CollectionPurchases, error)
 }
 
 type collection struct {
 	client.Clienter
 }
 
-func (c *collection) Purchases() (*CollectionPurchases, error) {
+func (c *collection) Purchases(qs ...url.Values) (*CollectionPurchases, error) {
 	var data CollectionPurchases
 
-	err := c.Get("discountGroupPurchase").Json(&data)
+	err := c.Get("discountGroupPurchase", qs...).Json(&data)
 	if err != nil {
 		return nil, err
 	}
