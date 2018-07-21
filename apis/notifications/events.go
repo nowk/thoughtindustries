@@ -6,10 +6,12 @@ import (
 
 type Eventser interface {
 	Course() Courser
+	Collection() Collectioner
 }
 
 type events struct {
-	course Courser
+	course     Courser
+	collection Collectioner
 }
 
 func New(c client.Clienter) Eventser {
@@ -17,10 +19,15 @@ func New(c client.Clienter) Eventser {
 	cl.Endpoint().Namespace("events")
 
 	return &events{
-		course: &course{cl},
+		course:     &course{cl},
+		collection: &collection{cl},
 	}
 }
 
 func (e *events) Course() Courser {
 	return e.course
+}
+
+func (e *events) Collection() Collectioner {
+	return e.collection
 }

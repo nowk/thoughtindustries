@@ -8,8 +8,8 @@ import (
 	"github.com/nowk/thoughtindustries/client"
 )
 
-func TestCoursePurchasesData(t *testing.T) {
-	f, err := os.Open("../../data/.json/course/purchases.json")
+func TestCollectionPurchasesData(t *testing.T) {
+	f, err := os.Open("../../data/.json/collection/purchases.json")
 	check(t, err)
 	mock := &mockReq{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
@@ -26,7 +26,7 @@ func TestCoursePurchasesData(t *testing.T) {
 
 	evt := New(cli)
 
-	data, err := evt.Course().Purchases()
+	data, err := evt.Collection().Purchases()
 	if err != nil {
 		t.Errorf("expected no error, got %s", err)
 	}
@@ -41,7 +41,7 @@ func TestCoursePurchasesData(t *testing.T) {
 	}
 
 	{
-		var exp = "66b131f7-33b7-4d5a-b0fa-bed64acd4c4e-1517868872-ch_x44IEO4smDLAidcy2xz5ZPMg-0"
+		var exp = "087cc8ea-fc25-40c9-a433-9c64bea3e475-1516480087-ch_x45fwds16iI23A1aSGz9egeJ-0"
 		var got = data.Events[0].Id
 
 		if exp != got {
@@ -50,7 +50,7 @@ func TestCoursePurchasesData(t *testing.T) {
 	}
 
 	{
-		var exp = "course"
+		var exp = "discountGroup"
 		var got = data.Events[0].PurchasableType
 
 		if exp != got {
@@ -59,7 +59,7 @@ func TestCoursePurchasesData(t *testing.T) {
 	}
 
 	{
-		var exp = "1bfaca09-16b3-4f8e-88c3-878e11b0445b"
+		var exp = "c1eb0b65-68fe-4cf7-8445-6da329d75e48"
 		var got = data.Events[0].UserDetail.Id
 
 		if exp != got {
