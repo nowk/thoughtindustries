@@ -12,7 +12,7 @@ type CoursePurchases struct {
 
 type CourseViews struct {
 	PageInfo PageInfo `json:"pageInfo"`
-	Views    []View   `json:"events"`
+	Events   []View   `json:"events"`
 }
 
 type Courser interface {
